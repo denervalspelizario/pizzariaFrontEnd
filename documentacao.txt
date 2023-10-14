@@ -1,0 +1,2 @@
+-- criar aplicação limpar index.tsx e css
+-- criar estilos globais 
