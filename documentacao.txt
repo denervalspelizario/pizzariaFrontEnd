@@ -1,2 +1,5 @@
 -- criar aplicação limpar index.tsx e css
--- criar estilos globais 
+-- criar estilos globais essa aplicaçãos será usado sass
+** yarn add sass 
+
+-- criação de input e textarea como componentes em src>components>ui>input 
