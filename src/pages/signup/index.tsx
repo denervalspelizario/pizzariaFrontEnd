@@ -2,21 +2,19 @@ import Head from "next/head" // responsável pelo cabeçalho na aba
 import Image from "next/image" // trabalhando com imagem no next
 import Link from "next/link" // navegação com o next
 
-import { Input } from "../components/ui/input"
-import { Button } from "../components/ui/button"
+import { Input } from "../../components/ui/input"
+import { Button } from "../../components/ui/button"
 
-import Logo from '../../public/logoPizza.png'
-import styles from '../../styles/home.module.scss'
-
-
+import Logo from '../../../public/logoPizza.png'
+import styles from '../../../styles/home.module.scss'
 
 
-export default function Home() {
+export default function SignUp() {
   return (
    <>
    <Head>
     <title>
-      SuperPizza - Faça seu login
+      SuperPizza - Faça seu cadastro agora!
     </title>
    </Head>
    <div className={styles.containerCenter}>
@@ -27,7 +25,15 @@ export default function Home() {
       />
 
       <div className={styles.login}>
+
+        <h1>Criando sua conta</h1>
         <form>
+
+          <Input
+            placeholder="Digite seu nome" 
+            type="text"
+          />
+
           <Input
             placeholder="Digite seu email" 
             type="text"
@@ -46,11 +52,8 @@ export default function Home() {
           </Button>  
         </form>
 
-        <Link 
-          href="/signup" 
-          legacyBehavior //no next 13 precisa senão da erro
-        >
-          <a className={styles.text}>Não possui uma conta? Cadastra-se</a>
+        <Link href="/" legacyBehavior>
+          <a className={styles.text}>Já possui uma conta? Faça seu login!</a>
         </Link>
         
       </div>

@@ -3,3 +3,12 @@
 ** yarn add sass 
 
 -- criação de input e textarea como componentes em src>components>ui>input 
+-- criação de button como components em src>components>ui>button
+Obs components criados inputs e btn que serão reultilizados
+
+-- adicionar todos os components criados em src>pages>index.tsx ela sera a pagina de login
+-- adicionar estilizacao e responsividade
+
+
+
+** yarn add react-icons
