@@ -9,6 +9,10 @@ Obs components criados inputs e btn que serão reultilizados
 -- adicionar todos os components criados em src>pages>index.tsx ela sera a pagina de login
 -- adicionar estilizacao e responsividade
 
+-- cricação de pagina de cadastro
+-- criação de context api para poder acessar de todas as paginas os dados da api
+-- cria-se src>context>AuthContext toda a logica do context depois em _app.tsx usando authprovider para abraçar dos components
+-- criou o context em _app.tsx usando AuthProvider abrace todos os components para todaa aplicação ter acesso ao context
 
 
 ** yarn add react-icons

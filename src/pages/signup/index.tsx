@@ -46,7 +46,7 @@ export default function SignUp() {
 
           <Button 
             type="submit"
-            loading={true}
+            loading={false}
           >
             Acessar
           </Button>  

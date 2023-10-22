@@ -2,16 +2,36 @@ import Head from "next/head" // responsável pelo cabeçalho na aba
 import Image from "next/image" // trabalhando com imagem no next
 import Link from "next/link" // navegação com o next
 
+
 import { Input } from "../components/ui/input"
 import { Button } from "../components/ui/button"
 
 import Logo from '../../public/logoPizza.png'
 import styles from '../../styles/home.module.scss'
 
+// imports para usar contexto
+import { FormEvent, useContext } from "react" 
+import { AuthContext } from "../contexts/AuthContext" // importando contexto
 
 
 
 export default function Home() {
+
+  // pegando função signIn la do contexto
+  const { signIn } = useContext(AuthContext)
+
+  async function handlelogin(event: FormEvent){
+    event.preventDefault() // evitando recarregamento da pagina após clicar no btn de formulario
+
+    let data = {
+      email: "teste@teste.com",
+      password: "teste123"
+    }
+
+    // Obs signIn foi tipado la no contexto que rpecisa receber email e password
+    await signIn(data)
+  }
+
   return (
    <>
    <Head>
@@ -27,7 +47,8 @@ export default function Home() {
       />
 
       <div className={styles.login}>
-        <form>
+        
+        <form onSubmit={handlelogin}>
           <Input
             placeholder="Digite seu email" 
             type="text"
@@ -40,7 +61,7 @@ export default function Home() {
 
           <Button 
             type="submit"
-            loading={true}
+            loading={false}
           >
             Acessar
           </Button>  
