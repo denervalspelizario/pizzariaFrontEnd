@@ -10,7 +10,7 @@ import Logo from '../../public/logoPizza.png'
 import styles from '../../styles/home.module.scss'
 
 // imports para usar contexto
-import { FormEvent, useContext } from "react" 
+import { FormEvent, useContext, useState } from "react" 
 import { AuthContext } from "../contexts/AuthContext" // importando contexto
 
 
@@ -20,12 +20,18 @@ export default function Home() {
   // pegando função signIn la do contexto
   const { signIn } = useContext(AuthContext)
 
+  // states que pegam os dados input
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const [loading, setLoading] = useState(false);
+
   async function handlelogin(event: FormEvent){
     event.preventDefault() // evitando recarregamento da pagina após clicar no btn de formulario
 
     let data = {
-      email: "teste@teste.com",
-      password: "teste123"
+      email: email,
+      password: password,
     }
 
     // Obs signIn foi tipado la no contexto que rpecisa receber email e password
@@ -52,11 +58,15 @@ export default function Home() {
           <Input
             placeholder="Digite seu email" 
             type="text"
+            value={email}
+            onChange={(e)=> setEmail(e.target.value)}
           />
 
           <Input
             placeholder="Digite sua senha"
-            type="password" 
+            type="password"
+            value={password} 
+            onChange={(e)=> setPassword(e.target.value)}
           />
 
           <Button 

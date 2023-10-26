@@ -16,3 +16,9 @@ Obs components criados inputs e btn que serão reultilizados
 
 
 ** yarn add react-icons
+
+Para acessar requisições api
+
+** yarn add axios nookies jwt-decode
+-- criar src>services>api.ts neta tera configuração de api base e tratamento de erro(opcional)
+-- depois criar src>services>apiClient.ts  nela vai receber os dados de api.ts 
