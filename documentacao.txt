@@ -17,8 +17,19 @@ Obs components criados inputs e btn que serão reultilizados
 
 ** yarn add react-icons
 
+ 
+
+-- criando context
+-- criar components>contexts>AuthContext.ts é nele será criado o context que abraçará todas as rotas
+-- vá em _app.tsx e adicione o AuthProvider sobre todos os Component
+-- sempre que vc precisar usar o context em uma aplicação import o useContext do react e o AuthContext do contexto criado
+-- dentro de AuthContext vai ter as funções para logar e deslogar ja ans pages vc pega os dados para poder usar no AuthContext
+
 Para acessar requisições api
 
 ** yarn add axios nookies jwt-decode
 -- criar src>services>api.ts neta tera configuração de api base e tratamento de erro(opcional)
--- depois criar src>services>apiClient.ts  nela vai receber os dados de api.ts 
+-- no tratamento de erro foi criado services>errors>AuthTokenError.ts que indicará erro no token
+-- depois criar src>services>apiClient.ts  nela vai receber os dados de api.ts ou seja apiClient facilita o uso de api.ts
+   é ele que chamamos nas requisições que neste caso será apenas " api "
+-- depois de criado em authContext funçõe sde login e logout  rodar o back-end 

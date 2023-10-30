@@ -52,7 +52,9 @@ export default function SignUp() {
           </Button>  
         </form>
 
-        <Link href="/" legacyBehavior>
+        <Link href="/"  // ciclou no link vai a direção rota principal 
+          legacyBehavior
+        >
           <a className={styles.text}>Já possui uma conta? Faça seu login!</a>
         </Link>
         

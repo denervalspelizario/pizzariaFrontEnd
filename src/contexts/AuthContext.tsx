@@ -1,8 +1,12 @@
 import { createContext, ReactNode, useState } from "react";
 
-import { destroyCookie } from 'nookies'; // import usado para deslogar
+import { api } from "../services/apiClient"; // importando a api de fato
+
+import { destroyCookie, setCookie, parseCookies } from 'nookies'; // destroyCookie usado para deslogar
 import Router from 'next/router';
 
+
+// TIPAGENS
 type AuthContextData = {
   user: UserProps; // dados do usuario
   isAuthenticated: boolean; // indicando se user esta logado ou não
@@ -23,12 +27,10 @@ type SignInProps = {
   password: string;
 }
 
-
 // tipagem do children
 type AuthProviderProps = {
   children: ReactNode // indica que elemento pode renderizar qualquer coisa que um componente React possa renderizar
 }
-
 
 type useSinGn = {
   email: string;
@@ -37,6 +39,7 @@ type useSinGn = {
 
 
 // contexto tipado com authcontextdata(user, isauthenticated e sigIn) 
+// será usado no AuthContext.Provider
 export const AuthContext = createContext({} as AuthContextData) 
 
 
@@ -45,6 +48,8 @@ export function signOut(){
   try {
    
     // usando para limpar os cookies e deslogar ** não esquecer token tem que ser igual de api.ts
+    // undefine pq essa rota não vai receber parametro de context e segundo parametro será o token 
+    // adicionando la no api.ts
     destroyCookie(undefined, '@pizzaria.token')  
 
     // deslogou agora ir para Tela inicial
@@ -56,7 +61,6 @@ export function signOut(){
 }
 
 
-
 export function Authprovider({ children }: AuthProviderProps){
 
   // tipando state com userprops(vai ter id, user  e email)
@@ -65,9 +69,41 @@ export function Authprovider({ children }: AuthProviderProps){
   // !! transforma a state user em um boolean se receber dados true senão false
   const isAuthenticated = !!user
 
+  // função para logar e ir para pagina de logado
   async function signIn({email, password}: useSinGn){
-    console.log("Dado email: " + email)
-    console.log("Dado email: " + password)
+    try {
+      // fazendo a requisição tipo post, rota session, passando os dados email e password
+      const response = await api.post('/session', {
+        email: email,
+        password: password
+      })
+
+      // pegando por desestruturação os dados da requisição feita
+      const {id, name, token } = response.data 
+
+      // Pegando o token do usuario(token que gera ao logar) e autenticando com token da aplicação(@pizzaria api.ts)
+      setCookie(undefined, '@pizzaria.token', token, {
+        maxAge: 60 * 60 * 24 * 30, // token expira em 1 mes
+        path: "/" // Quais caminhos terão acesso ao token neste caso todos
+      })
+
+      // Fez a autenticação do token
+      // adicionando a state user os dados ** obs lembrando que ela está tipada para receber id, name, email
+      setUser({
+        id: id,
+        name: name,
+        email: email
+      })
+      
+      // passar para as proximas requisições o nosso token
+      api.defaults.headers['Authorization'] = `Bearer ${token}`
+
+      // Redirecionar o user para /dashboard
+      Router.push('/dashboard')
+
+    }catch(error){
+      console.log("Erro ao Acessar ", error)
+    }
   }
 
   return(
