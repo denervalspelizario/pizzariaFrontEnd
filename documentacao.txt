@@ -16,6 +16,7 @@ Obs components criados inputs e btn que serão reultilizados
 
 
 ** yarn add react-icons
+** yarn add react-toastify    para alertas   não esquecer de importar globalmente em _app.tsx
 
  
 
@@ -32,4 +33,15 @@ Para acessar requisições api
 -- no tratamento de erro foi criado services>errors>AuthTokenError.ts que indicará erro no token
 -- depois criar src>services>apiClient.ts  nela vai receber os dados de api.ts ou seja apiClient facilita o uso de api.ts
    é ele que chamamos nas requisições que neste caso será apenas " api "
--- depois de criado em authContext funçõe sde login e logout  rodar o back-end 
+-- depois de criado em authContext funções de login e logout  rodar o back-end e testar se esta fazendo o login e jogando proxima rota
+-- ir para pagina de cadastro e seguir msm padrão, funçãod e cadastrar assim como login e logout ficam em auth
+
+-- foi adicionado ao projeto os alertas usando biblioteca react-toastify
+
+-- CRIAÇÃO DE ROTAS PRIVADAS DEPOIS DE LOGAR
+
+- no final de index.tsx criar o serversiders que vai renderizar antes de renderizar o front
+- nesse serversider será usado o canSSRGuest
+- crie src>utils  canSSRGuest = usuarios logados   , canSSRAuth = usuario desligados 
+
+

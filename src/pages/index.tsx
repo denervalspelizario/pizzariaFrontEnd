@@ -1,3 +1,8 @@
+
+// imports para usar contexto
+import { FormEvent, useContext, useState } from "react" 
+import { AuthContext } from "../contexts/AuthContext" // importando contexto
+
 import Head from "next/head" // responsável pelo cabeçalho na aba
 import Image from "next/image" // trabalhando com imagem no next
 import Link from "next/link" // navegação com o next
@@ -9,10 +14,7 @@ import { Button } from "../components/ui/button"
 import Logo from '../../public/logoPizza.png'
 import styles from '../../styles/home.module.scss'
 
-// imports para usar contexto
-import { FormEvent, useContext, useState } from "react" 
-import { AuthContext } from "../contexts/AuthContext" // importando contexto
-
+import { canSSRGuest } from '../utils/canSSRGuest'
 
 
 export default function Home() {
@@ -30,6 +32,15 @@ export default function Home() {
   async function handlelogin(event: FormEvent){ // como os dados vão vir de um formulário a tipagem será FormEvent
     event.preventDefault() // evitando recarregamento da pagina após clicar no btn de formulario
 
+    // validando se usuario digitou algo
+    if(email === '' || password === ''){
+      alert("PREENCHA OS DADOS")
+      return;
+    }
+
+    // ligando o loading
+    setLoading(true)
+
     // criando um objeto com os dados para se adequar a função la do context que esperá receber um objeto
     let data = {
       email: email, // state email que recebe dados do input
@@ -38,6 +49,9 @@ export default function Home() {
 
     // depois de adequar os dados de email e password chama a função signIn(logar) adicinando oo parametro dados tratado
     await signIn(data)
+
+    // deu certo o login então desliga o loading
+    setLoading(false)
   }
 
   return (
@@ -73,7 +87,7 @@ export default function Home() {
 
           <Button 
             type="submit"
-            loading={false}
+            loading={loading}
           >
             Acessar
           </Button>  
@@ -91,3 +105,14 @@ export default function Home() {
    </>
   )
 }
+
+
+
+// server side de usuario logado que sempre vai impedir que usuario logado vá para pagina de login
+// ver src>util>canSSRGuest
+export const getServerSideProps= canSSRGuest(async (contexto) => {
+
+  return {
+    props: {}
+  }
+}); 

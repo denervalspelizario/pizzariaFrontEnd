@@ -5,13 +5,16 @@ import { api } from "../services/apiClient"; // importando a api de fato
 import { destroyCookie, setCookie, parseCookies } from 'nookies'; // destroyCookie usado para deslogar
 import Router from 'next/router';
 
+import { toast } from 'react-toastify'; // importando o alerta
+
 
 // TIPAGENS
 type AuthContextData = {
   user: UserProps; // dados do usuario
   isAuthenticated: boolean; // indicando se user esta logado ou não
   signIn: (credentials: SignInProps) => Promise<void> // função devolve uma promise pq vai acessar la o backend e void(nao vai ter retorno)
-  signOut: () => void;  // devolve nada
+  signOut: () => void;  // deslogar devolve nada
+  signUp: (credentials: SignUpProps) => Promise<void>  // cadastrar não esquecer  a tipagem
 }
 
 // tipagem de user(dados do usuario)
@@ -27,15 +30,21 @@ type SignInProps = {
   password: string;
 }
 
+// tipagem de singUp(dados para fazer o cadastro)
+type SignUpProps = {
+  name: string;
+  email: string;
+  password: string;
+}
+
 // tipagem do children
 type AuthProviderProps = {
   children: ReactNode // indica que elemento pode renderizar qualquer coisa que um componente React possa renderizar
 }
 
-type useSinGn = {
-  email: string;
-  password: string;
-}
+
+
+
 
 
 // contexto tipado com authcontextdata(user, isauthenticated e sigIn) 
@@ -56,7 +65,8 @@ export function signOut(){
     Router.push('/')
 
   }catch{
-    console.log('erro ao deslogar')
+    toast.error("Erro ao deslogar!")
+
   }
 }
 
@@ -69,8 +79,8 @@ export function Authprovider({ children }: AuthProviderProps){
   // !! transforma a state user em um boolean se receber dados true senão false
   const isAuthenticated = !!user
 
-  // função para logar e ir para pagina de logado
-  async function signIn({email, password}: useSinGn){
+  // função para LOGAR e ir para pagina de logado
+  async function signIn({email, password}: SignInProps){
     try {
       // fazendo a requisição tipo post, rota session, passando os dados email e password
       const response = await api.post('/session', {
@@ -98,17 +108,48 @@ export function Authprovider({ children }: AuthProviderProps){
       // passar para as proximas requisições o nosso token
       api.defaults.headers['Authorization'] = `Bearer ${token}`
 
+      toast.success('Logado com sucesso!')
+
       // Redirecionar o user para /dashboard
       Router.push('/dashboard')
 
     }catch(error){
+
+      toast.error("Erro ao acessar!")
       console.log("Erro ao Acessar ", error)
     }
   }
 
+
+  // função para CADASTRAR 
+  async function signUp({name, email, password}: SignUpProps){
+    
+    // fazendo a requisição tipo post, rota session, passando os dados name, email e password
+    const response = await api.post('/users', {
+      name: name,
+      email: email,
+      password: password
+    })
+
+    // alerta de sucesso ao cadastrar
+    toast.success("Cadastrado com sucesso")
+
+
+    // Redirecionar o user para '/'  pagian de login
+    Router.push('/')
+
+    try {
+      
+
+    }catch(error){
+      console.log("Erro ao Cadastrar ", error)
+    }
+  }
+
+
   return(
     <AuthContext.Provider 
-      value={{ user, isAuthenticated, signIn, signOut}} // respasando todos os dados para todos componentes da aplicação 
+      value={{ user, isAuthenticated, signIn, signOut, signUp}} // respasando todos os dados para todos componentes da aplicação 
     >
       {children}
     </AuthContext.Provider>
