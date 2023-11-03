@@ -14,6 +14,7 @@ import { Button } from "../components/ui/button"
 import Logo from '../../public/logoPizza.png'
 import styles from '../../styles/home.module.scss'
 
+// import a funcao de contexto que não deixa acessar login se vc esta logado 
 import { canSSRGuest } from '../utils/canSSRGuest'
 
 

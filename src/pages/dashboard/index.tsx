@@ -1,3 +1,4 @@
+import { canSSRAuth } from "@/src/utils/canSSRAuth";
 
 export default function Dashboard(){
   return(
@@ -7,3 +8,12 @@ export default function Dashboard(){
    
   )
 }
+
+// server side de usuario logado que sempre vai impedir que usuario logado vá para pagina de login
+// ver src>util>canSSRAuth
+export const getServerSideProps= canSSRAuth(async (contexto) => {
+
+  return {
+    props: {}
+  }
+}); 

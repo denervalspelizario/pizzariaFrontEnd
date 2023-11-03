@@ -12,7 +12,7 @@ export function canSSRGuest<P>(fn: GetServerSideProps<P>){
     if(cookies['@pizzaria.token']){ // se o cokkie for o token ou sej a usuario está logado 
       return {
         redirect: {
-          destination: '/dashboard',
+          destination: '/dashboard', // redireciona para o dashboard
           permanent: false,
         }
       }
